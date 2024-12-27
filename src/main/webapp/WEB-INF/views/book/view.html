@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>AddNew</title>
+</head>
+<body>
+<h2>Add Book</h2>
+
+<p>
+    <a th:href="@{/books}">
+        Back to list
+    </a>
+</p>
+
+<table th:object="${book}">
+    <tr>
+        <td><label for="title">Title: </label></td>
+        <td><input type="text" id="title" th:field="*{title}" disabled/></td>
+    </tr>
+    <tr>
+        <td><label for="author">Author: </label></td>
+        <td><input type="text" id="author" th:field="*{author}" disabled/></td>
+    </tr>
+    <tr>
+        <td><label for="description">Description: </label></td>
+        <td><textarea id="description" cols="40" rows="10" th:field="*{description}" disabled></textarea>
+    </tr>
+    <tr>
+        <td><label for="count">Count: </label></td>
+        <td><input type="number" id="count" th:field="*{count}" disabled/></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            <a th:href="@{/books/borrow/__${book.id}__}">Borrow Book</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
