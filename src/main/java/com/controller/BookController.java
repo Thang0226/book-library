@@ -1,7 +1,9 @@
 package com.controller;
 
 import com.model.Book;
+import com.model.BorrowCard;
 import com.service.IBookService;
+import com.service.ICardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.smartcardio.Card;
 import java.util.Optional;
 
 @Controller
@@ -17,6 +20,8 @@ import java.util.Optional;
 public class BookController {
     @Autowired
     private IBookService bookService;
+    @Autowired
+    private ICardService cardService;
 
     @GetMapping
     public String listBooks(Model model) {
@@ -41,5 +46,30 @@ public class BookController {
         Optional<Book> book = bookService.findById(id);
         model.addAttribute("book", book.get());
         return "book/view";
+    }
+
+    @GetMapping("/borrow/{id}")
+    public String showBorrowForm(@PathVariable("id") Long id, Model model) {
+        Optional<Book> bookOptional = bookService.findById(id);
+        Book book = bookOptional.get();
+        int currentCount = book.getCount();
+        book.setCount(currentCount - 1);
+        bookService.save(book);
+
+        String cardNumberString = getCardNumber();
+        BorrowCard borrowCard = new BorrowCard(book, cardNumberString);
+        cardService.save(borrowCard);
+        return "redirect:/borrow-cards";
+    }
+
+    private String getCardNumber() {
+        String cardNumberString;
+        Optional<BorrowCard> card;
+        do {
+            int cardNumber = (int) (Math.random() * 100000);
+            cardNumberString = String.format("%05d", cardNumber);
+            card = cardService.findByCardNumber(cardNumberString);
+        } while (card.isPresent());
+        return cardNumberString;
     }
 }

@@ -32,4 +32,9 @@ public class CardService implements ICardService {
     public void remove(Long id) {
         cardRepository.deleteById(id);
     }
+
+    @Override
+    public Optional<BorrowCard> findByCardNumber(String cardNumber) {
+        return cardRepository.findByCardNumber(cardNumber);
+    }
 }

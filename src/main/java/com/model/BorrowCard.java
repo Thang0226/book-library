@@ -18,7 +18,7 @@ public class BorrowCard {
     public BorrowCard() {
     }
 
-    public BorrowCard(Long id, Book book, String cardNumber) {
+    public BorrowCard(Book book, String cardNumber) {
         this.id = id;
         this.book = book;
         this.cardNumber = cardNumber;

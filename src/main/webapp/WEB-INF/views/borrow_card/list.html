@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="~{layout :: head}">
+    <title>List</title>
+</head>
+
+<body>
+<h2>Borrow Cards</h2>
+<p style="margin-left: 5px">
+    <a th:href="@{/books}"> Back to book list </a>
+</p>
+
+<div th:if="${message}" class="notify">
+    <span th:text="${message}"></span>
+</div>
+
+<form th:action="@{/borrow-cards/remove}" method="post">
+    <table>
+        <tr>
+            <td>Enter card ID of returning book:</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="cardNumber"></td>
+            <td><input type="submit" value="Return Book"></td>
+        </tr>
+    </table>
+</form>
+
+<table id="list">
+    <thead>
+    <tr>
+        <th>Card ID Number</th>
+        <th>Book Title</th>
+        <th>Book Author</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="row : ${borrowCards}">
+        <td th:text="${row.cardNumber}"></td>
+        <td th:text="${row.book.title}"></td>
+        <td th:text="${row.book.author}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:insert="~{/layout :: footer}"></div>
+</body>
+</html>
