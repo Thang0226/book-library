@@ -14,7 +14,7 @@ public class Logger {
         System.out.println("Book count changed");
     }
 //    The main issue is likely that JPA/Hibernate proxies are interfering with the AOP proxies.
-//    --> Take the joint point to service layer instead of repository layer.
+//    --> Take the joint point to service layer instead of data model layer.
 
     @AfterReturning(pointcut = "within(com.controller.CardController)")
     public void logPersonBorrowBook(JoinPoint joinPoint) {
