@@ -1,7 +1,10 @@
 package com.model;
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 
+@Component
 @Entity
 @Table(name = "book")
 public class Book {
