@@ -49,10 +49,13 @@ public class BookController {
     }
 
     @GetMapping("/borrow/{id}")
-    public String showBorrowForm(@PathVariable("id") Long id, Model model) {
+    public String borrowBook(@PathVariable("id") Long id) {
         Optional<Book> bookOptional = bookService.findById(id);
         Book book = bookOptional.get();
         int currentCount = book.getCount();
+        if (currentCount == 0) {
+            return "error_book";
+        }
         book.setCount(currentCount - 1);
         bookService.save(book);
 
