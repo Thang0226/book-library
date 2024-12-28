@@ -32,4 +32,33 @@ public class BookService implements IBookService {
     public void remove(Long id) {
         bookRepository.deleteById(id);
     }
+
+    @Override
+    public Book minusBookCount(Long id) {
+        Optional<Book> bookOptional = findById(id);
+        if (bookOptional.isPresent()) {
+            Book book = bookOptional.get();
+            int currentCount = book.getCount();
+            if (currentCount == 0) {
+                return null;
+            }
+            book.setCount(currentCount - 1);
+            save(book);
+            return book;
+        }
+        return null;
+    }
+
+    @Override
+    public Book plusBookCount(Long id) {
+        Optional<Book> bookOptional = findById(id);
+        if (bookOptional.isPresent()) {
+            Book book = bookOptional.get();
+            int currentCount = book.getCount();
+            book.setCount(currentCount + 1);
+            save(book);
+            return book;
+        }
+        return null;
+    }
 }

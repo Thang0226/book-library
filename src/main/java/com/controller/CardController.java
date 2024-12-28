@@ -1,9 +1,8 @@
 package com.controller;
 
-import com.model.Book;
 import com.model.BorrowCard;
+import com.service.IBookService;
 import com.service.ICardService;
-import com.service.impl.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +19,7 @@ public class CardController {
     @Autowired
     private ICardService cardService;
     @Autowired
-    private BookService bookService;
+    private IBookService bookService;
 
     @GetMapping
     public String listCards(Model model) {
@@ -35,11 +34,7 @@ public class CardController {
             return "error_card";
         }
         cardService.remove(card.get().getId());
-
-        Book book = card.get().getBook();
-        int currentCount = book.getCount();
-        book.setCount(currentCount + 1);
-        bookService.save(book);
+        bookService.plusBookCount(card.get().getBook().getId());
         return "redirect:/borrow-cards";
     }
 }

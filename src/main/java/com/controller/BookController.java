@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.smartcardio.Card;
 import java.util.Optional;
 
 @Controller
@@ -50,15 +49,10 @@ public class BookController {
 
     @GetMapping("/borrow/{id}")
     public String borrowBook(@PathVariable("id") Long id) {
-        Optional<Book> bookOptional = bookService.findById(id);
-        Book book = bookOptional.get();
-        int currentCount = book.getCount();
-        if (currentCount == 0) {
+        Book book = bookService.minusBookCount(id);
+        if (book == null) {
             return "error_book";
         }
-        book.setCount(currentCount - 1);
-        bookService.save(book);
-
         String cardNumberString = getCardNumber();
         BorrowCard borrowCard = new BorrowCard(book, cardNumberString);
         cardService.save(borrowCard);
